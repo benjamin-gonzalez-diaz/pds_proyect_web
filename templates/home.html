@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <h1 className="title is-1">Tareas de estatica [es un placeholder]</h1>
+    <p>
+    Lista de tareas:
+    </p>
+    <p>
+    <a href="home.html" >Crear Tarea</a>
+    {%for i in range(0, len)%}
+    <div style='background: lightblue'>
+    <li>titulo: {{Response[i]['name']}}</li>
+    <p>enunciado: {{Response[i]['body']}}</p>
+    <a href="board.html" >ir a TaskBoard de {{Response[i]['name']}}</a>
+    </div>
+    <p></p>
+    <b>o</b>
+    {%endfor%}
+    <p></p>
+</html>

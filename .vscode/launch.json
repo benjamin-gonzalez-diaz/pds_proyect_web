@@ -1,0 +1,9 @@
+{
+    "configurations": [{
+        "name": "DEBUGGER",
+        "type": "python",
+        "request": "attach",
+        "port": 3008,
+        "host": "localhost",
+    }]
+}

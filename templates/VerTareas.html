@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Ver Tarea </title>
+    </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+  
+    <body>
+        <div>
+            <h1> Ver tarea || {{task.nivel}}</h1>
+            <p></p>
+            <button onclick="history.back()">Go Back</button>
+            <p></p>
+                <div class="title">
+                    <h3> Título de la tarea: </h3> {{task.title}}
+                </div>
+                
+                <div class="enunciado">
+                    <h3> Enunciado de la tarea: </h3>  {{task.enunciado}}
+                </div>
+                <div class="imagenDCL">
+                    <h2>{{task.image_name}}</h2>
+                </div>
+                <div id="dcl" class="DCL">
+                    <h3> DCL: </h3> </div>
+                    <div id="container" ></div>
+                    <script> 
+                    function toJson(){
+                        var data = `{{task.data}}`
+                        data = data.replace(/(&#34\;)/g,"\"")
+        
+                        var json = JSON.parse(data)
+                        return json
+                    }
+                    </script>
+                    
+                
+        
+            </div>
+        </div>
+        <script type = "text/javascript" src="{{ url_for('static', filename='js/konva.min.js') }}"> </script>}
+        <script type = "text/javascript" src="{{ url_for('static', filename='js/draw.js') }}"> </script>
+        <script>    
+            var data = `{{task.data}}`
+            data = data.replace(/(&#34\;)/g,"\"")
+
+            var json = JSON.parse(data)
+
+            for(let i=0; i < json['children'][1]['children'].length; i++){
+                if ((json['children'][1]['children'][i]['attrs']['name'] == 'line')){
+                    var line = json['children'][1]['children'][i]['attrs']['points']
+                    new newline(layer, stage, xi=line[0], xf=line[2], yi=line[1], yf=line[3])   
+                }
+
+                else if ((json['children'][1]['children'][i]['attrs']['name'] == 'empotra')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new empotra(layer, stage, color='black', xi=temp[0], yi=temp[1])   
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'circule')){
+                    //Rótula
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new circule(layer, stage, color='blue', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'triangule' && json['children'][1]['children'][i]['attrs']['fill'] == 'blue' )){
+                    //Apoyo fijo
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new triangule(layer, stage, color='blue', xi=temp[0], yi=temp[1])
+                }
+                
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'triangule' && json['children'][1]['children'][i]['attrs']['fill'] == 'red' )){
+                    //Apoyo deslizante
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new triangule(layer, stage, color='red', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'biela')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new newbiela(layer, stage, color='yellow', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'black')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='black', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'red')){
+                    //Fuerza Distribuida
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='red', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'blue')){
+                    //Momento
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='blue', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+            }   
+  
+        </script>
+    </body>
+</html>      

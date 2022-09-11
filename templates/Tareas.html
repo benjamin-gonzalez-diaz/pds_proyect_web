@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Menú de tareas </title>
+    </head>
+    <h2> <a href="Board" >Crear Tarea</a>   </h2>
+    <body>              
+        <div class='test_content'>
+            <h1> Tabla </h1>
+            <table border="1" style="width: 818px;">
+                <tr>
+                    <th> Titulo </th>
+                    <th> Enunciado </th>
+                    <th> Fecha añadida </th>
+                    <th> Acciones </th>
+                </tr>
+                
+                {%for task in tasks %}
+
+                <tr>
+                    <td> {{ task.title }}  </td>
+                    <td>  {{ task.enunciado }}  </td>
+                    <td>   {{ task.date_created}} </td>
+                    <td>
+                        <a href = "/VerTareas/{{task.id}}"> Ver tarea </a>
+                        <a href = "/Update/{{task.id}}"> Editar </a>   
+                        <a href = "/Delete/{{task.id}}"> Delete </a>
+                    </td>
+                </tr>
+                
+                {%endfor%}
+                
+                <tr>    </tr>
+            </table>
+        </div>
+    </body>
+
+</html>      

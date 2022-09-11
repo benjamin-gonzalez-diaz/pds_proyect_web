@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Crear Tarea </title>
+    </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+  
+    <body>
+        <div>
+            <h1> Editar tarea || nivel: {{task.nivel}}</h1>
+
+                <div class="titulo">Nuevo título:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="title" id="title" value="{{ task.title}}"/>
+                    </form>
+                </div>
+
+                <div class="'enunciado ">Nuevo enunciado:
+                    <form action="/Board" method="POST">
+                        <textarea rows="10" cols="50" name="enunciado" id="enunciado"> {{ task.enunciado }}</textarea>
+                    </form>
+                </div>
+                <div class="imagenDCL">  incorporar una imagen: {{task.image_name}}
+                    <form method="POST"action="/Board">
+                        <input type="file" name="file" id="seleccionArchivos" accept="image/*"><br>
+                    </form>
+                </div>
+                <!--
+                <div class="ecuacionFuerzasEnX ">escriba la sumatoria correspondiente a la fuerzas en X:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaX" id="FuerzasX"/>
+                    </form>
+                </div>
+
+                <div class="ecuacionFuerzasEnY ">escriba la sumatoria correspondiente a la fuerzas en Y:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaY" id="FuerzasY"/>
+                    </form>
+                </div>
+
+                <div class="ecuacionFuerzasMomentos ">escriba la sumatoria correspondiente a los momentos:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaMomentos" id="FuerzaMomentos"/>
+                    </form>
+                </div>
+-->
+                <img width="500" height="150" id="imagenPrevisualizacion" value="{{task.image_name}}">
+                
+                <button onclick="history.back()">Go Back</button>
+                <div>
+                    <input type="hidden" id="id_bacano" value="{{task.id}}">
+                </div>
+                
+
+
+            
+            
+            <p></p>
+            <input id="clickMe" type="button" value="Agregar barra" onclick="Newline();" />
+            <input id="newcircule" type="button" value="Agregar Rotula" onclick="circule();" />
+            <input id="soporte_1" type="button" value="Agregar apoyo fijo" onclick="triangule();" />
+            <input id="soporte_2" type="button" value="Agregar apoyo deslizante" onclick="triangule();" />
+            <input id="biela" type="button" value="Agregar biela" onclick="biela();" />
+            <input id="empotra" type="button" value="Agregar empotramiento" onclick="empotra();" />
+            <input id="empotra" type="button" value="Agregar empotramiento" onclick="empotra();" />
+            <input id="fuerza" type="button" value="Agregar fuerza" onclick="arrow();" />
+            <input id="fuerza_d" type="button" value="Agregar fuerza distribuida" onclick="arrow();" />
+            <input id="momento" type="button" value="Agregar momento" onclick="arrow();" />
+            <input id="saveData" type="button" value="Guardar Tarea" onclick="saveData();" />
+
+
+            <div id="dcl" class="DCL">
+                <div id="container" ></div>
+                <script> 
+                function toJson(){
+                    var data = `{{task.data}}`
+                    data = data.replace(/(&#34\;)/g,"\"")
+    
+                    var json = JSON.parse(data)
+                    return json
+                }
+                </script>
+            </div>
+        </div>
+        <script type = "text/javascript" src="{{ url_for('static', filename='js/konva.min.js') }}"> </script>}
+        <script type = "text/javascript" src="{{ url_for('static', filename='js/update.js') }}"> </script>
+        <script>    
+            var data = `{{task.data}}`
+            data = data.replace(/(&#34\;)/g,"\"")
+
+            var json = JSON.parse(data)
+
+            for(let i=0; i < json['children'][1]['children'].length; i++){
+                if ((json['children'][1]['children'][i]['attrs']['name'] == 'line')){
+                    var line = json['children'][1]['children'][i]['attrs']['points']
+                    new newline(layer, stage, xi=line[0], xf=line[2], yi=line[1], yf=line[3])   
+                }
+
+                else if ((json['children'][1]['children'][i]['attrs']['name'] == 'empotra')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new empotra(layer, stage, color='black', xi=temp[0], yi=temp[1])   
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'circule')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new circule(layer, stage, color='blue', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'triangule' && json['children'][1]['children'][i]['attrs']['fill'] == 'blue' )){
+                    //Apoyo fijo
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new triangule(layer, stage, color='blue', xi=temp[0], yi=temp[1])
+                }
+                
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'triangule' && json['children'][1]['children'][i]['attrs']['fill'] == 'red' )){
+                    //Apoyo deslizante
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new triangule(layer, stage, color='red', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'biela')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new newbiela(layer, stage, color='yellow', xi=temp[0], yi=temp[1])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'black')){
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='black', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'red')){
+                    //Fuerza Distribuida
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='red', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+
+                else if((json['children'][1]['children'][i]['attrs']['name'] == 'arrow' && json['children'][1]['children'][i]['attrs']['fill'] == 'blue')){
+                    //Momento
+                    var temp = json['children'][1]['children'][i]['attrs']['points']
+                    new arrow(layer, stage, color='blue', xi=temp[0], yi=temp[1], xf=temp[2], yf=temp[3])
+                }
+            }
+        </script>
+    </body>
+</html>      

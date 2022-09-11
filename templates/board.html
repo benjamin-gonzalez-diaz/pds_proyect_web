@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Crear Tarea </title>
+    </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+  
+    <body>
+        <div>
+            <h3 name = "nivel" id="nivel" > Crear nueva tarea </h3>
+                <div class="titulo">Nuevo título:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="title" id="title"/>
+                    </form>
+                </div>
+                <div class="'enunciado ">Nuevo enunciado:
+                    <form action="/Board" method="POST">
+                        <textarea rows="5" cols="70" name="enunciado" id="enunciado"></textarea>
+                    </form>
+                </div>
+                <div class="imagenDCL">  incorporar una imagen:
+                    <form method="POST" action="/uploadImage" enctype="multipart/form-data" id='imageForm'>
+                        <input type="file" name="file" id="seleccionArchivos" accept="image/*" /><br>
+                    </form>
+                </div>
+                <!--
+                <div class="ecuacionFuerzasEnX ">escriba la sumatoria correspondiente a la fuerzas en X:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaX" id="FuerzasX"/>
+                    </form>
+                </div>
+
+                <div class="ecuacionFuerzasEnY ">escriba la sumatoria correspondiente a la fuerzas en Y:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaY" id="FuerzasY"/>
+                    </form>
+                </div>
+
+                <div class="ecuacionFuerzasMomentos ">escriba la sumatoria correspondiente a los momentos:
+                    <form action="/Board" method="POST">
+                        <input type="text" name="FuerzaMomentos" id="FuerzaMomentos"/>
+                    </form>
+                </div>
+                -->
+            <img width="500" height="150" id="imagenPrevisualizacion">
+            <button onclick="history.back()">Go Back</button>
+            <p></p>
+            <input id="clickMe" type="button" value="Agregar barra" onclick="Newline();" />
+            <input id="newcircule" type="button" value="Agregar Rotula" onclick="circule();" />
+            <input id="soporte_1" type="button" value="Agregar apoyo fijo" onclick="triangule();" />
+            <input id="soporte_2" type="button" value="Agregar apoyo deslizante" onclick="triangule();" />
+            <input id="biela" type="button" value="Agregar biela" onclick="biela();" />
+            <input id="empotra" type="button" value="Agregar empotramiento" onclick="empotra();" />
+            <input id="fuerza" type="button" value="Agregar fuerza" onclick="arrow();" />
+            <input id="fuerza_d" type="button" value="Agregar fuerza distribuida" onclick="arrow();" />
+            <input id="momento" type="button" value="Agregar momento" onclick="arrow();" />
+            <input id="saveData" type="button" value="Guardar Tarea" onclick="saveData();"  />
+
+
+                <div id="container" class="row"></div>
+            </div>
+        </div>
+            
+        <script src="{{ url_for('static', filename='js/konva.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/board.js') }}"></script>
+        
+    </body>
+</html>      
