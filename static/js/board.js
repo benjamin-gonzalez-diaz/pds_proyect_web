@@ -681,6 +681,7 @@ function saveData(stage){
   var imagedcl = document.getElementById('seleccionArchivos').value
   
   const imageForm = document.getElementById('imageForm');
+  console.log(imageForm)
   const $seleccionArchivos = document.querySelector("#seleccionArchivos")
   const archivos = $seleccionArchivos.files;
   const primerArchivo = archivos[0];
