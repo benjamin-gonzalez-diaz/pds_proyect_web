@@ -26,6 +26,7 @@ class todo(db.Model):
     #informacion de la foto
     image_name = db.Column(db.Text)   
     #nivel del ejercicio
+    dificulty = db.Column(db.Integer)
     date_created = db.Column(db.DateTime)
     
     
@@ -55,9 +56,13 @@ def board():
 def upload_File():
     file = request.files['file']
     filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    try:
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    except:
+        None
+    tasks = todo.query.order_by(todo.id).all()
     
-    return render_template('board.html')
+    return render_template('Tareas.html',tasks=tasks)
     
 @app.route('/User/<int:id>', methods=['POST', 'GET'])
 def user():
