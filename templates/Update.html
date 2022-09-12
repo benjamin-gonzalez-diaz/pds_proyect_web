@@ -21,13 +21,17 @@
                         <textarea rows="10" cols="50" name="enunciado" id="enunciado"> {{ task.enunciado }}</textarea>
                     </form>
                 </div>
-                <div class="imagenDCL">  incorporar una imagen (asegurese de que el nombre de la imagen sea una sola palabra):
+                <div class="imagenDCL">  incorporar una imagen (asegurese de que el nombre de la imagen sea una sola palabra) {{task.image_name}}:
                     <form method="POST" action="/uploadImage" enctype="multipart/form-data" id='imageForm'>
                         <input type="file" name="file" id="seleccionArchivos" accept="image/*" /><br>
                     </form>
                 </div>
-                <img width="500" height="150" id="imagenPrevisualizacion" value="{{task.image_name}}">
-                
+                <div class="contenedor-imagenes">
+                    antiguo
+                    <img width="500" height="150" src="{{ url_for('static', filename=task.image_name)}} ">
+                    nuevo
+                    <img width="500" height="150" id="imagenPrevisualizacion" value="{{task.image_name}}">
+                </div>
                 <button onclick="history.back()">Go Back</button>
                 <div>
                     <input type="hidden" id="id_bacano" value="{{task.id}}">
@@ -128,20 +132,11 @@
 
 </html>      
 <style>
-    #foto{
-    max-width: 40%;
-    height: auto;
-    margin: 20px;
-    padding: 5px;
-    display: inline-block;
-    margin: auto;
-    }
-    #foto2{
-        max-width: 40%;
-    height: auto;
-    margin: 20px;
-    padding: 5px;
-    display: inline-block;
-    margin: auto;
-    }
+    .contenedor-imagenes {
+        display: flex;
+      }
+      
+      .contenedor-imagenes img:first-child {
+        margin-right: 10px;
+      }
 </style>
