@@ -47,7 +47,7 @@ def board():
             db.session.add(task)
             db.session.commit()
             return redirect('/') 
-        except:
+        except: 
             return "Hubo un error subiendo tu información"
     else: 
         return render_template('board.html')
