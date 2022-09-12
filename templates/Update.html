@@ -9,7 +9,7 @@
         <div >
             <scroll-container>
             <h1> Editar tarea || nivel: {{task.nivel}}</h1>
-
+            <div class="contenedor-imagenes">
                 <div class="titulo">Nuevo título:
                     <form action="/Board" method="POST">
                         <input type="text" name="title" id="title" value="{{ task.title}}"/>
@@ -18,9 +18,10 @@
 
                 <div class="'enunciado ">Nuevo enunciado:
                     <form action="/Board" method="POST">
-                        <textarea rows="10" cols="50" name="enunciado" id="enunciado"> {{ task.enunciado }}</textarea>
+                        <textarea rows="5" cols="130" name="enunciado" id="enunciado"> {{ task.enunciado }}</textarea>
                     </form>
                 </div>
+            </div>
                 <div class="imagenDCL">  incorporar una imagen (asegurese de que el nombre de la imagen sea una sola palabra) {{task.image_name}}:
                     <form method="POST" action="/uploadImage" enctype="multipart/form-data" id='imageForm'>
                         <input type="file" name="file" id="seleccionArchivos" accept="image/*" /><br>
@@ -32,7 +33,7 @@
                     nuevo
                     <img width="500" height="150" id="imagenPrevisualizacion" value="{{task.image_name}}">
                 </div>
-                <button onclick="history.back()">Go Back</button>
+                
                 <div>
                     <input type="hidden" id="id_bacano" value="{{task.id}}">
                 </div>
@@ -53,6 +54,7 @@
             <input id="fuerza_d" type="button" value="Agregar fuerza distribuida" onclick="arrow();" />
             <input id="momento" type="button" value="Agregar momento" onclick="arrow();" />
             <input id="saveData" type="button" value="Guardar Tarea" onclick="saveData();" />
+            <button onclick="history.back()">Go Back</button>
 
 
             <div id="dcl" class="DCL">

@@ -700,7 +700,7 @@ function saveData(stage){
 
   let dificultyLevel = LNewbiela.length + LNewline.length + LCircule.length + LTriangule.length + LArrow.length
   console.log(dificultyLevel)
-  formData.append('dificulty', dificultyLevel)
+  
   const request = new XMLHttpRequest()
   request.open("POST", "/Board")
   request.send(formData)
