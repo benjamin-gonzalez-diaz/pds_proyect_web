@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
   
     <body>
-        <div>
+        <div >
+            <scroll-container>
             <h1> Editar tarea || nivel: {{task.nivel}}</h1>
 
                 <div class="titulo">Nuevo título:
@@ -62,6 +63,7 @@
                 }
                 </script>
             </div>
+        </scroll-container>
         </div>
         <script type = "text/javascript" src="{{ url_for('static', filename='js/konva.min.js') }}"> </script>}
         <script type = "text/javascript" src="{{ url_for('static', filename='js/update.js') }}"> </script>

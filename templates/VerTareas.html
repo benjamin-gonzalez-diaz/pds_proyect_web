@@ -7,36 +7,38 @@
   
     <body>
         <div>
-            <h1> Ver tarea || {{task.nivel}}</h1>
-            <p></p>
-            <button onclick="history.back()">Go Back</button>
-            <p></p>
-                <div class="title">
-                    <h3> Título de la tarea: </h3> {{task.title}}
-                </div>
-                
-                <div class="enunciado">
-                    <h3> Enunciado de la tarea: </h3>  {{task.enunciado}}
-                </div>
-                <div class="imagenDCL">
-                    <img src={{task.image_name}}/>
-                </div>
-                <div id="dcl" class="DCL">
-                    <h3> DCL: </h3> </div>
-                    <div id="container" ></div>
-                    <script> 
-                    function toJson(){
-                        var data = `{{task.data}}`
-                        data = data.replace(/(&#34\;)/g,"\"")
-        
-                        var json = JSON.parse(data)
-                        return json
-                    }
-                    </script>
+            
+                <h1> Ver tarea || nivel: {{task.dificulty}}</h1>
+                <p></p>
+                <button onclick="history.back()">Go Back</button>
+                <p></p>
+                    <div class="title">
+                        <h3> Título de la tarea: </h3> {{task.title}}
+                    </div>
                     
-                
-        
-            </div>
+                    <div class="enunciado">
+                        <h3> Enunciado de la tarea: </h3>  {{task.enunciado}}
+                    </div>
+                    <div class="imagenDCL">
+                        <img width="500" height="150" src="{{ url_for('static', filename=task.image_name)}} "/>
+                    </div>
+                    <div id="dcl" class="DCL">
+                        <h3> DCL: </h3> </div>
+                        <div id="container" ></div>
+                        <script> 
+                        function toJson(){
+                            var data = `{{task.data}}`
+                            data = data.replace(/(&#34\;)/g,"\"")
+            
+                            var json = JSON.parse(data)
+                            return json
+                        }
+                        </script>
+                        
+                    
+                        
+                </div>
+            
         </div>
         <script type = "text/javascript" src="{{ url_for('static', filename='js/konva.min.js') }}"> </script>}
         <script type = "text/javascript" src="{{ url_for('static', filename='js/draw.js') }}"> </script>

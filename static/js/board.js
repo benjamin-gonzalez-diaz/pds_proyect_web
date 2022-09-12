@@ -141,7 +141,7 @@ class arrow{
   anchor2.on('dragmove', updateLine);
   console.log(points)
   console.log(layer.toJSON())
-  
+  LArrow.push(color)
 }}
 
 class momentum{
@@ -367,6 +367,7 @@ class triangule{
     
   });
   anchor1.on('dragend', updateLine);
+  LTriangule.push(color)
 }}
 
 
@@ -421,7 +422,7 @@ class circule{
     stage.batchDraw();
     updateLine()
   });
-  
+  LCircule.push('circule')
 
 }
 }
@@ -606,7 +607,7 @@ class newline{
   anchor2.setAttr( 'y', line.attrs.points[3]);
 
 
-
+  LNewline.push('line')
   
 }}
 
@@ -648,7 +649,7 @@ class newbiela{
       
     });
     anchor1.on('dragend', updateLine);
-
+    LNewbiela.push('biela')
   }
 }
 
@@ -696,10 +697,10 @@ function saveData(stage){
     formData.append('file', objectURL)
   }
   
-  function dificultyLevel(){
-    
-    return 1
-  }
+
+  let dificultyLevel = LNewbiela.length + LNewline.length + LCircule.length + LTriangule.length + LArrow.length
+  console.log(dificultyLevel)
+  formData.append('dificulty', dificultyLevel)
   const request = new XMLHttpRequest()
   request.open("POST", "/Board")
   request.send(formData)

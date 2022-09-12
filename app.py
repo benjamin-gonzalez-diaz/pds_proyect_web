@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from werkzeug.utils import secure_filename
 import debugpy
 
-UPLOAD_FOLDER = './upload'
+UPLOAD_FOLDER = './static/upload/'
+UPLOAD_IMAGE = './static/upload'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///tasks.db"
@@ -29,6 +30,8 @@ class db_handler(db.Model):
     dificulty = db.Column(db.Integer)
     date_created = db.Column(db.DateTime)
     
+
+    
     
 tasks = {}
 @app.route('/Board', methods=['POST', 'GET'])
@@ -40,7 +43,11 @@ def board():
         #JSON information
         task_data = request.form['data']
         file = request.form['file'].split("\\")[-1]
+        print(file)
         image_name = os.path.join(app.config['UPLOAD_FOLDER'], file)
+        print(image_name)
+        image_name = image_name.replace('static/','')
+        print(image_name)
         
         task = db_handler( title=task_title, enunciado = task_instructions, data = task_data, image_name = image_name, date_created=datetime.utcnow())
         try:
