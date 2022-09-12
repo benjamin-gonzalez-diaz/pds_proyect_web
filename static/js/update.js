@@ -2,8 +2,13 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var shadowOffset = 20;
 var tween = null;
-var blockSnapSize = 30;
 var poin = 0;
+var blockSnapSize = 30;
+var LArrow = [];
+var LTriangule = [];
+var LCircule = [];
+var LNewline = [];
+var LNewbiela = [];
 var points = []
 
 document.getElementById("clickMe").onclick = function () {  new newline(layer,stage);};
@@ -12,16 +17,18 @@ document.getElementById("soporte_1").onclick = function () {  new triangule(laye
 document.getElementById("soporte_2").onclick = function () {  new triangule(layer,stage,"red");};
 document.getElementById("biela").onclick = function () {  new newbiela(layer,stage,"red");};
 document.getElementById("empotra").onclick = function () {  new empotra(layer,stage,"red");};
+// fuerzas
 document.getElementById("fuerza").onclick = function(){ new arrow(layer, stage, color="black")}
 document.getElementById("fuerza_d").onclick = function(){ new arrow(layer, stage, color="red")}
 document.getElementById("momento").onclick = function(){ new arrow(layer, stage, color="blue")}
-document.getElementById("saveData").onclick = function () {  saveData();};
+//
+document.getElementById("saveData").onclick = function () {  saveData(stage);};
 
 
 const stage = new Konva.Stage({
-    container: "container",
-    width: window.innerWidth,
-    height: window.innerHeight
+  container: 'container',
+  width: window.innerWidth,
+  height: window.innerHeight
 });
 
 const $seleccionArchivos = document.querySelector("#seleccionArchivos"),
@@ -52,23 +59,21 @@ var gridLayer = new Konva.Layer();
 var padding = blockSnapSize;
 console.log(width, padding, width / padding);
 for (var i = 0; i < width / padding; i++) {
-gridLayer.add(new Konva.Line({
+  gridLayer.add(new Konva.Line({
     points: [Math.round(i * padding) + 0.5, 0, Math.round(i * padding) + 0.5, height],
     stroke: '#ddd',
     strokeWidth: 1,
-}));
+  }));
 }
 
 gridLayer.add(new Konva.Line({points: [0,0,10,10]}));
 for (var j = 0; j < height / padding; j++) {
-    gridLayer.add(new Konva.Line({
-        points: [0, Math.round(j * padding), width, Math.round(j * padding)],
-        stroke: '#ddd',
-        strokeWidth: 0.5,
-    }));
+  gridLayer.add(new Konva.Line({
+    points: [0, Math.round(j * padding), width, Math.round(j * padding)],
+    stroke: '#ddd',
+    strokeWidth: 0.5,
+  }));
 }
-
-
 stage.add(gridLayer);
 stage.add(layer);
 gridLayer.draw()
@@ -111,7 +116,10 @@ class newline{
     fill: 'darkgreen',
     fontSize: 15
   })
-  layer.add(textoCircle1)
+  if(poin === 1){
+    layer.add(textoCircle1)
+  }
+  
 
   const anchor2 = new Konva.Circle({
     x: line.attrs.points[2],
@@ -133,10 +141,8 @@ class newline{
     fill: 'darkgreen',
     fontSize: 15
   })
-  if(poin !== 2){
-    layer.add(textoCircle2)
-  }
 
+  layer.add(textoCircle2)
 
   const texto = new Konva.Text({
     text:  (Math.sqrt((anchor1.x()-anchor2.x())**2 + (anchor1.y()-anchor2.y()))/10).toFixed(0) + " M",
@@ -146,7 +152,11 @@ class newline{
     fill: 'black',
     fontSize: 20
   })
-  layer.add(texto)
+  console.log(texto.text())
+  if((Math.sqrt((anchor1.x()-anchor2.x())**2 + (anchor1.y()-anchor2.y()))/10).toFixed(0) !== 0){
+    layer.add(texto)
+  }
+  
 
   function updateLine() {
     const points = [
@@ -247,10 +257,9 @@ class newline{
   anchor2.setAttr( 'y', line.attrs.points[3]);
 
 
-
+  LNewline.push('line')
   
 }}
-
 
 class empotra{
   constructor(layer, stage, color, xi = 60,yi = 60) {
@@ -294,9 +303,9 @@ class empotra{
       x: Math.round(anchor1.x() ),
       y: Math.round(anchor1.y() ) 
     });
-    textoCircle1.position({
+        textoCircle1.position({
       x: Math.round(anchor1.x() ),
-      y: Math.round(anchor1.y() ) +5
+      y: Math.round(anchor1.y() ) -15
     })
     stage.batchDraw();
     
@@ -357,6 +366,7 @@ class triangule{
     
   });
   anchor1.on('dragend', updateLine);
+  LTriangule.push(color)
 }}
   
   
@@ -410,10 +420,11 @@ class circule{
     stage.batchDraw();
     updateLine()
   });
-  
+  LCircule.push('circule')
 
 }
 }
+
 
 
 class arrow{
@@ -447,7 +458,6 @@ class arrow{
   })
   layer.add(anchor1);
   poin += 1
-  
   points.push(poin)
   const textoCircle1 = new Konva.Text({
     text:  "P"+poin,
@@ -457,7 +467,6 @@ class arrow{
     fill: 'darkgreen',
     fontSize: 15
   })
-
   layer.add(textoCircle1)
   const anchor2 = new Konva.Circle({
     x: line.attrs.points[2],
@@ -548,7 +557,7 @@ class arrow{
   anchor2.on('dragmove', updateLine);
   console.log(points)
   console.log(layer.toJSON())
-  
+  LArrow.push(color)
 }}
   
 
@@ -588,7 +597,7 @@ class newbiela{
       
     });
     anchor1.on('dragend', updateLine);
-
+    LNewbiela.push('biela')
   }
 }
   
@@ -596,26 +605,45 @@ class newbiela{
   
 layer.draw()
 
-function saveData(){
-    var json = stage.toJSON();
-    //console.log(json)
-    //console.log(JSON.parse(json)['children'][1]['children'][0]['attrs']['points'])
-    var formData = new FormData();
-    formData.append("content", "Tarea Data")
-  
-    var title = document.getElementById("title").value
-    formData.append('title', title)
-  
-    var enunciado = document.getElementById("enunciado").value
-    formData.append('instructions', enunciado)
-  
-    formData.append('data', json)
-    var imagedcl = document.getElementById('seleccionArchivos').value
-    formData.append('imagenDCL', imagedcl)
-    id = document.getElementById("id_bacano").value
-    const request = new XMLHttpRequest()
+function saveData(stage){
+  var json = stage.toJSON();
+  //console.log(json)
+  //console.log(JSON.parse(json)['children'][1]['children'][0]['attrs']['points'])
+  var formData = new FormData();
+  formData.append("content", "Tarea Data")
 
-    var msg = "/Update/"+id
-    request.open("POST", msg)
-    request.send(formData)
+  var title = document.getElementById("title").value
+  formData.append('title', title)
+
+  var enunciado = document.getElementById("enunciado").value
+  formData.append('instructions', enunciado)
+
+  formData.append('data', json)
+  var imagedcl = document.getElementById('seleccionArchivos').value
+  
+  const imageForm = document.getElementById('imageForm');
+  console.log(imageForm)
+  const $seleccionArchivos = document.querySelector("#seleccionArchivos")
+  const archivos = $seleccionArchivos.files;
+  const primerArchivo = archivos[0];
+  const objectURL = document.getElementById('seleccionArchivos').value
+  try{
+    const objectURL = URL.createObjectURL(primerArchivo);
   }
+  catch{
+    const objectURL = document.getElementById('seleccionArchivos').value
+  }
+  finally{
+    formData.append('file', objectURL)
+  }
+  
+
+  let dificultyLevel = LNewbiela.length + LNewline.length + LCircule.length + LTriangule.length + LArrow.length
+  console.log(dificultyLevel)
+  formData.append('dificulty', dificultyLevel)
+  const request = new XMLHttpRequest()
+  request.open("POST", "/Board")
+  request.send(formData)
+  imageForm.submit();
+  console.log(request)
+}

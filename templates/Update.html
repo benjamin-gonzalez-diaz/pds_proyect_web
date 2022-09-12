@@ -21,9 +21,9 @@
                         <textarea rows="10" cols="50" name="enunciado" id="enunciado"> {{ task.enunciado }}</textarea>
                     </form>
                 </div>
-                <div class="imagenDCL">  incorporar una imagen: {{task.image_name}}
-                    <form method="POST"action="/Board">
-                        <input type="file" name="file" id="seleccionArchivos" accept="image/*"><br>
+                <div class="imagenDCL">  incorporar una imagen (asegurese de que el nombre de la imagen sea una sola palabra):
+                    <form method="POST" action="/uploadImage" enctype="multipart/form-data" id='imageForm'>
+                        <input type="file" name="file" id="seleccionArchivos" accept="image/*" /><br>
                     </form>
                 </div>
                 <img width="500" height="150" id="imagenPrevisualizacion" value="{{task.image_name}}">
@@ -125,4 +125,23 @@
             }
         </script>
     </body>
+
 </html>      
+<style>
+    #foto{
+    max-width: 40%;
+    height: auto;
+    margin: 20px;
+    padding: 5px;
+    display: inline-block;
+    margin: auto;
+    }
+    #foto2{
+        max-width: 40%;
+    height: auto;
+    margin: 20px;
+    padding: 5px;
+    display: inline-block;
+    margin: auto;
+    }
+</style>
