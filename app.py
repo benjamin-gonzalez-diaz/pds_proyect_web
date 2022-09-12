@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///tasks.db"
 db = SQLAlchemy(app)
 
 
-class todo(db.Model):
+class db_handler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     title = db.Column(db.String(50))
@@ -42,7 +42,7 @@ def board():
         file = request.form['file'].split("\\")[-1]
         image_name = os.path.join(app.config['UPLOAD_FOLDER'], file)
         
-        task = todo( title=task_title, enunciado = task_instructions, data = task_data, image_name = image_name, date_created=datetime.utcnow())
+        task = db_handler( title=task_title, enunciado = task_instructions, data = task_data, image_name = image_name, date_created=datetime.utcnow())
         try:
             db.session.add(task)
             db.session.commit()
@@ -60,7 +60,7 @@ def upload_File():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     except:
         None
-    tasks = todo.query.order_by(todo.id).all()
+    tasks = db_handler.query.order_by(db_handler.id).all()
     
     return render_template('Tareas.html',tasks=tasks)
     
@@ -70,7 +70,7 @@ def user():
 
 @app.route('/Delete/<int:id>', methods=['POST', 'GET'])
 def delete(id):  
-    task_to_delete = todo.query.get_or_404(id)
+    task_to_delete = db_handler.query.get_or_404(id)
     try:
         db.session.delete(task_to_delete)
         db.session.commit()
@@ -81,14 +81,14 @@ def delete(id):
 
 @app.route('/VerTareas/<int:id>', methods=['POST', 'GET'])
 def ver(id):  
-    task = todo.query.get_or_404(id)
+    task = db_handler.query.get_or_404(id)
     return render_template('VerTareas.html', task=task)
 
 
 
 @app.route('/Update/<int:id>', methods=['POST', 'GET'])
 def update(id):  
-    task = todo.query.get_or_404(id)
+    task = db_handler.query.get_or_404(id)
     if request.method == 'POST':
         task.title = request.form['title']
         task.enunciado = request.form['instructions']
@@ -109,7 +109,7 @@ def update(id):
 
 @app.route('/')
 def home():
-    tasks = todo.query.order_by(todo.id).all()
+    tasks = db_handler.query.order_by(db_handler.id).all()
     return render_template('Tareas.html', tasks=tasks)
 
 
