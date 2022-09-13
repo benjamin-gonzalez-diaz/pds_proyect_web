@@ -9,7 +9,6 @@ from werkzeug.utils import secure_filename
 import debugpy
 
 UPLOAD_FOLDER = './static/upload/'
-UPLOAD_IMAGE = './static/upload'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///tasks.db"
@@ -43,11 +42,13 @@ def board():
         #JSON information
         task_data = request.form['data']
         file = request.form['file'].split("\\")[-1]
-        print(file)
+        if(file == ''):
+            file = 'BlankPNG1235678.PNG'
+        print("el file",file)
         image_name = os.path.join(app.config['UPLOAD_FOLDER'], file)
-        print(image_name)
+        print("nombre imagen",image_name)
         image_name = image_name.replace('static/','')
-        print(image_name)
+        print("recortado",image_name)
         
         task = db_handler( title=task_title, enunciado = task_instructions, data = task_data, image_name = image_name, date_created=datetime.utcnow())
         try:
@@ -62,7 +63,11 @@ def board():
 @app.route('/uploadImage', methods=['POST', 'GET'])
 def upload_File():
     file = request.files['file']
+    print("fileStorage?",file)
     filename = secure_filename(file.filename)
+    if (filename == ''):
+        filename = 'BlankPNG1235678.PNG'
+    print("in uploadImage",filename)
     try:
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     except:
@@ -89,6 +94,7 @@ def delete(id):
 @app.route('/VerTareas/<int:id>', methods=['POST', 'GET'])
 def ver(id):  
     task = db_handler.query.get_or_404(id)
+    print(task)
     return render_template('VerTareas.html', task=task)
 
 
